@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso | Dispensa Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+    <button class="theme-toggle-btn" onclick="toggleTheme()" title="Alternar Tema">
+        <i id="themeIcon" class="fa-solid fa-moon"></i>
+    </button>
+
+    <div class="login-container">
+        <div class="login-card">
+            
+            <div class="login-header">
+                <div class="logo-box">
+                    <i class="fa-solid fa-notes-medical"></i>
+                </div>
+                <h2>Dispensa Digital</h2>
+                <p id="tituloPagina">Acesse sua conta</p>
+            </div>
+
+            <form id="formLogin" class="form-active" onsubmit="fazerLogin(event)">
+                <div class="input-group">
+                    <label>Matrícula</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="matricula" placeholder="Ex: 100" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Senha</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="senha" placeholder="Sua senha" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login">
+                    Entrar <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+                <p style="text-align: center; margin-top: 20px; font-size: 0.9rem; color: var(--text-secondary);">
+                    Não tem conta? <span class="toggle-link" onclick="alternarFormulario('cadastro')" style="color: var(--primary-color); cursor: pointer; font-weight: 600;">Cadastre-se aqui</span>
+                </p>
+            </form>
+
+            <form id="formCadastro" class="form-toggle" onsubmit="fazerCadastro(event)">
+                
+                <div class="input-group">
+                    <label>Nome Completo</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-id-card"></i>
+                        <input type="text" id="cadNome" placeholder="Seu nome completo" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>E-mail Corporativo</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" id="cadEmail" placeholder="seu.email@saude.riopreto.sp.gov.br" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Matrícula</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-hashtag"></i>
+                        <input type="text" id="cadMatricula" placeholder="Somente números" required oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    </div>
+                    <small class="input-hint">Use apenas os números da sua funcional.</small>
+                </div>
+
+                <div class="input-group">
+                    <label>Senha</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="cadSenha" placeholder="Crie uma senha segura" required minlength="6">
+                    </div>
+                    <small class="input-hint">Mínimo de 6 caracteres.</small>
+                </div>
+
+                <div class="input-group">
+                    <label>Confirmar Senha</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="cadSenhaConfirma" placeholder="Repita a senha" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login" style="background-color: var(--success-color);">
+                    Criar Conta <i class="fa-solid fa-check"></i>
+                </button>
+
+                <p style="text-align: center; margin-top: 20px; font-size: 0.9rem; color: var(--text-secondary);">
+                    Já possui conta? <span class="toggle-link" onclick="alternarFormulario('login')" style="color: var(--primary-color); cursor: pointer; font-weight: 600;">Fazer Login</span>
+                </p>
+            </form>
+
+        </div>
+        
+        <p class="footer-text">
+            Secretaria Municipal de Saúde<br>
+            São José do Rio Preto © 2026
+        </p>
+    </div>
+
+    <script>
+        // Carregar Tema ao Abrir
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        const icon = document.getElementById('themeIcon');
+        if(icon) icon.className = savedTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            const icon = document.getElementById('themeIcon');
+            icon.className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        }
+    </script>
+    <script src="login.js"></script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+/* --- ESTILOS GERAIS --- */
+:root {
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --bg-color: #f3f4f6;
+    --surface-color: #ffffff;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --border-color: #e5e7eb;
+    --success-color: #10b981;
+}
+
+[data-theme="dark"] {
+    --primary-color: #3b82f6;
+    --bg-color: #111827;
+    --surface-color: #1f2937;
+    --text-primary: #f9fafb;
+    --text-secondary: #9ca3af;
+    --border-color: #374151;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    transition: background 0.3s ease;
+}
+
+/* --- CONTAINER DE LOGIN --- */
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-card {
+    background-color: var(--surface-color);
+    padding: 40px 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    position: relative; /* Para animações */
+}
+
+/* --- CABEÇALHO --- */
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo-box {
+    width: 50px;
+    height: 50px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin: 0 auto 15px;
+}
+
+.login-header h2 { margin: 0; font-size: 1.5rem; color: var(--text-primary); }
+.login-header p { margin: 5px 0 0; color: var(--text-secondary); font-size: 0.9rem; }
+
+/* --- INPUTS E FORMULÁRIO --- */
+.input-group {
+    margin-bottom: 25px; /* Aumentado para evitar sobreposição */
+    position: relative;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper i {
+    position: absolute;
+    left: 15px;
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 12px 15px 12px 45px; /* Espaço para o ícone */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-color); /* Contraste leve no input */
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+.input-wrapper input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    background-color: var(--surface-color);
+}
+
+/* Texto de ajuda (Hint) */
+.input-hint {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 6px;
+    line-height: 1.3;
+}
+
+/* --- BOTÕES --- */
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-login:hover { background-color: var(--primary-hover); }
+.btn-login:active { transform: scale(0.98); }
+.btn-login:disabled { opacity: 0.7; cursor: not-allowed; }
+
+/* --- RODAPÉ ELEGANTE --- */
+.footer-text {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 0.75rem; /* Pequeno e discreto */
+    color: var(--text-secondary);
+    opacity: 0.7;
+    line-height: 1.5;
+    max-width: 300px;
+}
+
+/* --- BOTÃO TEMA (DARK MODE) --- */
+.theme-toggle-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.theme-toggle-btn:hover {
+    background-color: var(--border-color);
+    transform: rotate(15deg);
+}
+
+/* Animações do Formulário */
+.form-toggle { display: none; }
+.form-active { display: block; animation: fadeUp 0.4s ease-out; }
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsividade Mobile */
+@media (max-width: 480px) {
+    .login-card { padding: 30px 20px; }
+    .theme-toggle-btn { top: 15px; right: 15px; }
+}

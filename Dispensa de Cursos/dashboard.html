@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Dispensa Digital</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="logo-area">
+            <i class="fa-solid fa-notes-medical fa-2x"></i>
+            <span>Dispensa<br>Digital</span>
+        </div>
+        
+        <ul class="menu-items">
+            <li class="active"><a href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Visão Geral</a></li>
+            <li><a href="formulario.html"><i class="fa-solid fa-plus-circle"></i> Nova Solicitação</a></li>
+            <li><a href="historico.html"><i class="fa-solid fa-clock-rotate-left"></i> Histórico</a></li>
+            <li><a href="perfil.html"><i class="fa-solid fa-user-gear"></i> Meus Dados</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        
+        <header>
+            <div class="page-title">
+                <h2>Painel de Controle</h2>
+                <small>Gerencie seus processos de dispensa</small>
+            </div>
+
+            <div class="user-controls">
+                <button class="btn-icon" onclick="toggleTheme()" title="Mudar Tema">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
+                </button>
+            
+                <div class="user-profile" style="display: flex; align-items: center; gap: 10px;">
+                    
+                    
+            
+                    <div style="display: flex; flex-direction: column; line-height: 1.2;">
+                        <span id="headerNome" style="font-weight: 600; font-size: 0.9rem;">Usuário</span>
+                    </div>
+            
+                </div>
+            
+                <button onclick="fazerLogout()" class="btn-logout">
+                    <i class="fa-solid fa-power-off"></i> Sair
+                </button>
+            </div>  
+        </header>
+
+        <div class="content-wrapper">
+            
+            <a href="formulario.html" class="btn-primary-block">
+                <i class="fa-solid fa-plus"></i> Abrir Nova Solicitação
+            </a>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="icon-box warning"><i class="fa-regular fa-clock"></i></div>
+                    <div class="stat-info">
+                        <h3 id="countAnalise">0</h3>
+                        <p>Em Andamento</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon-box success"><i class="fa-solid fa-check"></i></div>
+                    <div class="stat-info">
+                        <h3 id="countAprovados">0</h3>
+                        <p>Concluídos</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon-box danger"><i class="fa-solid fa-xmark"></i></div>
+                    <div class="stat-info">
+                        <h3 id="countCancelados">0</h3>
+                        <p>Indeferidos</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <h2 id="tituloLista">Solicitações Recentes</h2>
+            </div>
+
+            <div id="listaSolicitacoes" class="requests-list">
+                <p style="color: var(--text-secondary)">Carregando...</p>
+            </div>
+        </div>
+    </main>
+
+    <div id="modalDetalhes" class="modal-overlay">
+        <div class="modal-card">
+            <div id="detalhesPedido"></div>
+           
+        </div>
+    </div>
+
+    <div id="modalCompletarCadastro" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header-custom">
+                <h3><i class="fa-solid fa-user-pen"></i> Completar Cadastro</h3>
+            </div>
+            <div class="modal-body-custom">
+                <p>Confirme seus dados para continuar.</p>
+                <form id="formPerfil" onsubmit="salvarPerfil(event)">
+                    <input type="text" id="novoNome" class="obs-input" style="margin-bottom:10px" readonly>
+                    
+                    <select id="novoCargo" class="obs-input" style="margin-bottom:10px" required>
+                        <option value="">Selecione o Cargo...</option>
+                        <option value="Agente de Saúde">Agente de Saúde</option>
+                        <option value="Enfermeiro">Enfermeiro</option>
+                        <option value="Médico">Médico</option>
+                        <option value="Técnico Administrativo">Técnico Admin.</option>
+                        <option value="Gerente">Gerente</option>
+                    </select>
+
+                    <select id="novaUnidade" class="obs-input" style="margin-bottom:10px" required>
+                        <option value="">Selecione a Unidade...</option>
+                        <option value="UBS Central">UBS Central</option>
+                        <option value="UPA Norte">UPA Norte</option>
+                        <option value="Secretaria de Saúde">Secretaria de Saúde</option>
+                    </select>
+
+                    <button type="submit" class="btn-primary" style="width:100%">Salvar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modeloPDF" style="display: none; padding: 40px; font-family: 'Arial', sans-serif; color: black; background: white; width: 210mm; min-height: 297mm; position: relative;">
+        
+        <div style="text-align: center; font-weight: bold; margin-bottom: 30px; line-height: 1.5;">
+            <p style="margin: 0;">PREFEITURA MUNICIPAL</p>
+            <p style="margin: 0;">SECRETARIA DE SAÚDE</p>
+            <p style="margin: 0;">SÃO JOSÉ DO RIO PRETO</p>
+            <br>
+            <h2 style="margin: 5px; text-decoration: underline;">REQUERIMENTO</h2>
+            <h3 style="margin: 5px;">DISPENSA DE CURSOS / CONGRESSO</h3>
+        </div>
+
+        <div style="position: absolute; top: 40px; right: 40px; border: 2px solid #000; padding: 8px 15px; font-size: 12px; background: #fff;">
+            <strong>Protocolo SIGM:</strong><br>
+            <span id="pdfProtocolo" style="font-size: 14px;"></span>
+        </div>
+
+        <div style="margin-bottom: 20px; font-size: 14px; line-height: 1.8;">
+            <div style="border-bottom: 1px solid #999; margin-bottom: 5px;">
+                <strong>Nome do (a) Servidor (a):</strong> <span id="pdfNome"></span>
+            </div>
+            <div style="border-bottom: 1px solid #999; margin-bottom: 5px;">
+                <strong>Matrícula:</strong> <span id="pdfMatricula"></span>
+            </div>
+            <div style="border-bottom: 1px solid #999; margin-bottom: 5px;">
+                <strong>Unidade de Trabalho:</strong> <span id="pdfUnidade"></span>
+            </div>
+            <div style="border-bottom: 1px solid #999; margin-bottom: 5px;">
+                <strong>Cargo:</strong> <span id="pdfCargo"></span>
+            </div>
+        </div>
+
+        <p style="text-align: justify; margin: 30px 0; font-size: 14px;">
+            Vem mui respeitosamente requerer de V. Excelência o Deferimento do pedido abaixo:
+        </p>
+
+        <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-bottom: 20px; font-size: 13px;">
+            <tr>
+                <td style="border: 1px solid black; padding: 8px; background: #f0f0f0; width: 30%;"><strong>Evento:</strong></td>
+                <td style="border: 1px solid black; padding: 8px;"><span id="pdfEvento"></span></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; padding: 8px; background: #f0f0f0;"><strong>Objetivo:</strong></td>
+                <td style="border: 1px solid black; padding: 8px;"><span id="pdfObjetivo"></span></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; padding: 8px; background: #f0f0f0;"><strong>Período:</strong></td>
+                <td style="border: 1px solid black; padding: 8px;"><span id="pdfPeriodo"></span></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; padding: 8px; background: #f0f0f0;"><strong>Local:</strong></td>
+                <td style="border: 1px solid black; padding: 8px;"><span id="pdfCidade"></span> / <span id="pdfEstado"></span></td>
+            </tr>
+        </table>
+
+        <div style="margin-bottom: 30px; font-size: 14px;">
+            <strong>Anexo I</strong><br><br>
+            <div style="display: flex; gap: 30px;">
+                <span id="checkConvite">( ) Convite</span>
+                <span id="checkProgramacao">( ) Programação</span>
+                <span id="checkConvocacao">( ) Convocação</span>
+                <span id="checkOutros">( ) Outros</span>
+            </div>
+        </div>
+
+        <p style="text-align: right; margin: 40px 0; font-size: 14px;">
+            São José do Rio Preto, <span id="pdfDataAssinatura"></span>.
+        </p>
+
+        <div style="margin-top: 50px; display: flex; flex-direction: column; align-items: center; gap: 40px;">
+            
+            <div style="text-align: center; width: 60%;">
+                <div style="font-family: 'Dancing Script', cursive; font-size: 24px; color: #000080; height: 30px;" id="signServidor"></div>
+                <div style="border-top: 1px solid black;"></div>
+                <p style="font-size: 12px; margin-top: 5px;">Assinatura do (a) Servidor (a)</p>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; width: 100%; margin-top: 20px;">
+                <div style="text-align: center; width: 45%;">
+                    <p style="font-size: 11px; margin-bottom: 2px;">De Acordo:</p>
+                    <div style="font-family: 'Dancing Script', cursive; font-size: 22px; color: #000080; height: 40px;" id="signGerente"></div>
+                    <div style="border-top: 1px solid black;"></div>
+                    <p style="font-size: 12px; margin-top: 5px;">Carimbo e Assinatura<br>Gerente da Unidade</p>
+                </div>
+
+                <div style="text-align: center; width: 45%;">
+                    <p style="font-size: 11px; margin-bottom: 2px;">De Acordo:</p>
+                    <div style="font-family: 'Dancing Script', cursive; font-size: 22px; color: #000080; height: 40px;" id="signAdmin"></div>
+                    <div style="border-top: 1px solid black;"></div>
+                    <p style="font-size: 12px; margin-top: 5px;">Secretário Municipal de Saúde<br>Coordenador / Chefe</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="position: absolute; bottom: 40px; left: 40px; right: 40px; font-size: 10px; border-top: 2px solid #000; padding-top: 10px;">
+            <strong>Instruções:</strong><br>
+            01. Deverá o servidor solicitar o afastamento com antecedência de 30 dias.<br>
+            02. Depois de autorizado, anexar esta autorização junto com o certificado.<br>
+            03. O protocolo SIGM deve ser gerado na unidade solicitada (IDM: 31396).
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+    <script>
+        function salvarPerfil(e) {
+            e.preventDefault();
+            const usuario = JSON.parse(localStorage.getItem('usuarioLogado'));
+            usuario.cargo = document.getElementById('novoCargo').value;
+            usuario.unidade = document.getElementById('novaUnidade').value;
+            localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
+            location.reload();
+        }
+    </script>
+</body>
+</html>

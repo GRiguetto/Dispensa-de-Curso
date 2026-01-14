@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Dados | Dispensa Digital</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="dashboard.css">
+    
+    <style>
+        /* Ajuste fino específico desta página para o card */
+        .profile-card {
+            background: var(--surface-color);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="logo-area">
+            <i class="fa-solid fa-notes-medical fa-2x"></i>
+            <span>Dispensa<br>Digital</span>
+        </div>
+        <ul class="menu-items">
+            <li><a href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Visão Geral</a></li>
+            <li><a href="formulario.html"><i class="fa-solid fa-plus-circle"></i> Nova Solicitação</a></li>
+            <li><a href="historico.html"><i class="fa-solid fa-clock-rotate-left"></i> Histórico</a></li>
+            <li class="active"><a href="#"><i class="fa-solid fa-user-gear"></i> Meus Dados</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <header>
+            <div class="page-title">
+                <h2>Meus Dados</h2>
+                <small>Gerencie suas informações pessoais e locais de trabalho</small>
+            </div>
+            
+            <div class="user-controls">
+                <button class="btn-icon" onclick="toggleTheme()"><i id="themeIcon" class="fa-solid fa-moon"></i></button>
+                <div class="user-profile">
+                    <div class="user-info">
+                        <span id="headerNome">Usuário</span>
+                        <small>Conta</small>
+                    </div>
+                </div>
+                <button class="btn-logout" onclick="fazerLogout()">
+                    <i class="fa-solid fa-right-from-bracket"></i> <span>Sair</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+            
+            <div class="profile-card">
+                <h3 style="margin-bottom: 25px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; color: var(--text-primary);">
+                    <i class="fa-solid fa-id-card"></i> Atualizar Cadastro
+                </h3>
+
+                <form id="formMeusDados" onsubmit="salvarMeusDados(event)">
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px; margin-bottom: 20px;">
+                        <div>
+                            <label style="display:block; margin-bottom:5px; font-weight:600; font-size:0.85rem;">Matrícula</label>
+                            <input type="text" id="perfilMatricula" disabled 
+                                   style="width:100%; padding:10px; background: var(--bg-color); border:1px solid var(--border-color); border-radius:6px; opacity: 0.7; cursor: not-allowed; color: var(--text-primary);">
+                            <small style="color: var(--text-secondary); font-size: 0.75rem;">Não alterável</small>
+                        </div>
+                        <div>
+                            <label style="display:block; margin-bottom:5px; font-weight:600; font-size:0.85rem;">Nome Completo</label>
+                            <input type="text" id="perfilNome" required
+                                   style="width:100%; padding:10px; border:1px solid var(--border-color); border-radius:6px; background: var(--surface-color); color: var(--text-primary);">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div>
+                            <label style="display:block; margin-bottom:5px; font-weight:600; font-size:0.85rem;">E-mail</label>
+                            <input type="email" id="perfilEmail" required
+                                   style="width:100%; padding:10px; border:1px solid var(--border-color); border-radius:6px; background: var(--surface-color); color: var(--text-primary);">
+                        </div>
+                        <div>
+                            <label style="display:block; margin-bottom:5px; font-weight:600; font-size:0.85rem;">Cargo / Função</label>
+                            <input type="text" id="perfilCargo" required
+                                   style="width:100%; padding:10px; border:1px solid var(--border-color); border-radius:6px; background: var(--surface-color); color: var(--text-primary);">
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 30px;">
+                        <label style="display:block; margin-bottom:10px; font-weight:600; font-size:0.9rem;">
+                            <i class="fa-solid fa-hospital-user"></i> Onde você trabalha?
+                        </label>
+                        
+                        <div id="containerUnidades" class="selected-units-container">
+                            <span style="color:var(--text-secondary); font-size:0.85rem; padding:10px;">Nenhuma unidade selecionada ainda.</span>
+                        </div>
+
+                        <button type="button" onclick="abrirModalUnidades()" class="btn-secondary" style="width:100%; border: 1px dashed var(--primary-color); color: var(--primary-color); background: transparent; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 500; transition: background 0.2s;">
+                            <i class="fa-solid fa-magnifying-glass-plus"></i> Escolher Local de Trabalho
+                        </button>
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="width: 100%; padding: 14px; font-size: 1rem; border: none; border-radius: 8px; background-color: var(--primary-color); color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fa-solid fa-floppy-disk"></i> Salvar Alterações
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="modalBuscaUnidade" class="modal-overlay-search">
+        <div class="modal-box-search">
+            <div class="modal-header-search">
+                <h3 style="margin:0; font-size:1.1rem; color: var(--text-primary);">Selecionar Unidade</h3>
+                <div class="search-input-wrapper">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="inputBuscaUnidade" placeholder="Pesquisar setor..." oninput="filtrarUnidades()" autocomplete="off">
+                </div>
+            </div>
+            
+            <div id="listaUnidadesScroll" class="modal-list-scroll">
+                </div>
+
+            <div class="modal-close-btn">
+                <button type="button" onclick="fecharModalUnidades()" class="btn-primary" style="width:100%; padding: 12px; border-radius: 8px; border: none; background: var(--primary-color); color: white; cursor: pointer; font-weight: 600;">
+                    Concluir Seleção
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="perfil.js"></script>
+</body>
+</html>
