@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Dispensa Digital</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="dashboard.css" />
+  </head>
+  <body>
+    <nav class="sidebar">
+      <div class="logo-area">
+        <i><img src="img/Coat_of_arms_of_São_José_do_Rio_Preto_SP.png" alt="" width="50px"></i>
+        <span>Dispensa<br />Digital</span>
+      </div>
+
+      <ul class="menu-items">
+        <li class="active">
+          <a href="dashboard.html"
+            ><i class="fa-solid fa-chart-pie"></i> Visão Geral</a
+          >
+        </li>
+        <li>
+          <a href="formulario.html"
+            ><i class="fa-solid fa-plus-circle"></i> Nova Solicitação</a
+          >
+        </li>
+        <li>
+          <a href="historico.html"
+            ><i class="fa-solid fa-clock-rotate-left"></i> Histórico</a
+          >
+        </li>
+        <li>
+          <a href="perfil.html"
+            ><i class="fa-solid fa-user-gear"></i> Meus Dados</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <main class="main-content">
+      <header>
+        <div class="page-title">
+          <h2>Painel de Controle</h2>
+          <small>Gerencie seus processos de dispensa</small>
+        </div>
+
+        <div class="user-controls">
+          <button class="btn-icon" onclick="toggleTheme()" title="Mudar Tema">
+            <i id="themeIcon" class="fa-solid fa-moon"></i>
+          </button>
+
+          <div
+            class="user-profile"
+            style="display: flex; align-items: center; gap: 10px"
+          >
+            <div
+              style="display: flex; flex-direction: column; line-height: 1.2"
+            >
+              <span id="headerNome" style="font-weight: 600; font-size: 0.9rem"
+                >Usuário</span
+              >
+            </div>
+          </div>
+
+          <button onclick="fazerLogout()" class="btn-logout">
+            <i class="fa-solid fa-power-off"></i> Sair
+          </button>
+        </div>
+      </header>
+
+      <div class="content-wrapper">
+        <a href="formulario.html" class="btn-primary-block">
+          <i class="fa-solid fa-plus"></i> Abrir Nova Solicitação
+        </a>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="icon-box warning">
+              <i class="fa-regular fa-clock"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="countAnalise">0</h3>
+              <p>Em Andamento</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="icon-box success">
+              <i class="fa-solid fa-check"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="countAprovados">0</h3>
+              <p>Concluídos</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="icon-box danger"><i class="fa-solid fa-xmark"></i></div>
+            <div class="stat-info">
+              <h3 id="countCancelados">0</h3>
+              <p>Indeferidos</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-header">
+          <h2 id="tituloLista">Solicitações Recentes</h2>
+        </div>
+
+        <div id="listaSolicitacoes" class="requests-list">
+          <p style="color: var(--text-secondary)">Carregando...</p>
+        </div>
+      </div>
+    </main>
+
+    <div id="modalDetalhes" class="modal-overlay">
+      <div class="modal-card">
+        <div id="detalhesPedido"></div>
+      </div>
+    </div>
+
+    <div id="modeloPDF"
+      style="
+        display: none;
+        width: 210mm;
+        background: white;
+        padding: 15mm 15mm;
+        font-family: Arial, sans-serif;
+        color: black;
+      "
+    >
+      <div style="text-align: center; margin-bottom: 20px">
+        <img
+          src="img/Coat_of_arms_of_São_José_do_Rio_Preto_SP.png"
+          style="height: 70px; margin-bottom: 5px"
+          onerror="this.style.display='none'"
+        />
+        <h3 style="margin: 0; font-size: 14px; text-transform: uppercase">
+          Prefeitura de São José do Rio Preto
+        </h3>
+        <p style="margin: 2px 0; font-size: 12px">
+          Secretaria Municipal de Saúde - SMS
+        </p>
+        <div
+          style="border-bottom: 2px solid black; width: 100%; margin-top: 10px"
+        ></div>
+        <h2
+          style="margin-top: 15px; font-size: 16px; text-decoration: underline"
+        >
+          SOLICITAÇÃO DE DISPENSA DE PONTO
+        </h2>
+      </div>
+
+      <div style="font-size: 12px; line-height: 1.4">
+        <div style="margin-bottom: 10px">
+          <strong
+            style="
+              display: block;
+              border-bottom: 1px solid #ccc;
+              margin-bottom: 5px;
+            "
+            >1. DADOS DO SERVIDOR</strong
+          >
+          <p style="margin: 3px 0">
+            <strong>Nome:</strong> <span id="pdfNome">---</span>
+          </p>
+          <p style="margin: 3px 0">
+            <strong>Matrícula:</strong>
+            <span id="pdfMatricula">---</span> &nbsp;|&nbsp;
+            <strong>Unidade:</strong> <span id="pdfUnidade">---</span>
+          </p>
+        </div>
+
+        <div style="margin-bottom: 10px">
+          <strong
+            style="
+              display: block;
+              border-bottom: 1px solid #ccc;
+              margin-bottom: 5px;
+            "
+            >2. DADOS DO AFASTAMENTO</strong
+          >
+          <p style="margin: 3px 0">
+            <strong>Evento:</strong> <span id="pdfEvento">---</span>
+          </p>
+          <p style="margin: 3px 0">
+            <strong>Período:</strong> <span id="pdfDataInicio">---</span> a
+            <span id="pdfDataFim">---</span>
+          </p>
+          <p style="margin: 3px 0">
+            <strong>Local:</strong> <span id="pdfLocal">---</span>
+          </p>
+
+          <p style="margin: 8px 0 2px">
+            <strong>Tipo de Afastamento (Anexo I):</strong>
+          </p>
+          <div
+            style="
+              display: flex;
+              gap: 15px;
+              font-size: 11px;
+              margin-bottom: 8px;
+            "
+          >
+            <span id="checkConvite">( ) Convite</span>
+            <span id="checkProgramacao">( ) Programação</span>
+            <span id="checkConvocacao">( ) Convocação</span>
+            <span id="checkOutros">( ) Outros</span>
+          </div>
+
+          <p style="margin: 5px 0 2px"><strong>Justificativa:</strong></p>
+          <div
+            id="pdfObjetivo"
+            style="
+              border: 1px solid #eee;
+              padding: 5px;
+              background: #f9f9f9;
+              min-height: 40px;
+              text-align: justify;
+            "
+          >
+            ---
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 25px; border: 1px solid #000; padding: 10px">
+        <p
+          style="
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+            background: #eee;
+            font-size: 11px;
+          "
+        >
+          APROVAÇÕES
+        </p>
+
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+          "
+        >
+          <div
+            style="
+              width: 48%;
+              border: 1px dashed #999;
+              padding: 5px;
+              text-align: center;
+            "
+          >
+            <p style="font-size: 9px; font-weight: bold; margin-bottom: 20px">
+              SERVIDOR SOLICITANTE
+            </p>
+            <div style="min-height: 20px">
+              <span
+                id="signServidor"
+                style="font-family: 'Courier New'; font-size: 11px"
+                >---</span
+              >
+            </div>
+            <div style="border-top: 1px solid #000; margin-top: 2px"></div>
+            <span style="font-size: 9px">Assinatura Eletrônica</span><br />
+            <span id="signData" style="font-size: 8px">Data: --/--/----</span>
+          </div>
+
+          <div
+            style="
+              width: 48%;
+              border: 1px solid #000;
+              padding: 5px;
+              text-align: center;
+            "
+          >
+            <p style="font-size: 9px; font-weight: bold; margin-bottom: 20px">
+              CHEFIA IMEDIATA (Gerente)
+            </p>
+            <div style="min-height: 20px">
+              <span
+                id="signGerente"
+                style="
+                  font-family: 'Courier New';
+                  font-size: 11px;
+                  font-weight: bold;
+                "
+                >---</span
+              >
+            </div>
+            <div style="border-top: 1px solid #000; margin-top: 2px"></div>
+            <span style="font-size: 9px">Carimbo e Assinatura</span>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between">
+          <div
+            style="
+              width: 48%;
+              border: 1px solid #000;
+              padding: 5px;
+              text-align: center;
+            "
+          >
+            <p style="font-size: 9px; font-weight: bold; margin-bottom: 20px">
+              COORDENAÇÃO / DIRETORIA
+            </p>
+            <div style="min-height: 20px">
+              <span
+                id="signCoord"
+                style="
+                  font-family: 'Courier New';
+                  font-size: 11px;
+                  font-weight: bold;
+                "
+                >---</span
+              >
+            </div>
+            <div style="border-top: 1px solid #000; margin-top: 2px"></div>
+            <span style="font-size: 9px">Carimbo e Assinatura</span>
+          </div>
+
+          <div
+            style="
+              width: 48%;
+              border: 1px solid #000;
+              padding: 5px;
+              text-align: center;
+              background: #fdfdfd;
+            "
+          >
+            <p style="font-size: 9px; font-weight: bold; margin-bottom: 20px">
+              SECRETARIA DE SAÚDE (Expediente)
+            </p>
+            <div style="min-height: 20px">
+              <span
+                id="signAdmin"
+                style="
+                  font-family: 'Courier New';
+                  font-size: 11px;
+                  font-weight: bold;
+                "
+                >---</span
+              >
+            </div>
+            <div style="border-top: 1px solid #000; margin-top: 2px"></div>
+            <span style="font-size: 9px">Autorização Final</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        style="
+          margin-top: 15px;
+          font-size: 9px;
+          text-align: center;
+          color: #555;
+        "
+      >
+        Documento gerado digitalmente em <span id="dataImpressao"></span>.
+      </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+  </body>
+</html>
