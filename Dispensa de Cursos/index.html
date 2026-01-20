@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acesso | Dispensa Digital</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="login.css" />
+  </head>
+  <body>
+    <button
+      class="theme-toggle-btn"
+      onclick="toggleTheme()"
+      title="Alternar Tema"
+    >
+      <i id="themeIcon" class="fa-solid fa-moon"></i>
+    </button>
+
+    <div class="login-container">
+      <div class="login-card">
+        <div class="login-header">
+          <i
+            ><img
+              src="img/Coat_of_arms_of_São_José_do_Rio_Preto_SP.png"
+              alt=""
+              width="80px"
+          /></i>
+
+          <h2>Dispensa Digital</h2>
+          <p id="tituloPagina">Acesse sua conta</p>
+        </div>
+
+        <form id="formLogin" class="form-active" onsubmit="fazerLogin(event)">
+          <div class="input-group">
+            <label>Matrícula</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-user"></i>
+              <input
+                type="text"
+                id="matricula"
+                placeholder="Ex: 100"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>Senha</label>
+            <div class="input-wrapper" style="position: relative">
+              <input
+                type="password"
+                id="password"
+                placeholder="Sua Senha"
+                required
+                style="padding-right: 40px"
+              />
+              <i
+                class="fa-solid fa-eye"
+                id="btnVerSenha"
+                onclick="toggleSenha()"
+                style="
+                  position: absolute;
+                  right: 15px;
+                  width: 15px;
+                  top: 50%;
+                  transform: translateY(-50%);
+                  cursor: pointer;
+                  color: #666;
+                "
+              >
+              </i>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-login">
+            Entrar <i class="fa-solid fa-arrow-right"></i>
+          </button>
+
+          <p
+            style="
+              text-align: center;
+              margin-top: 20px;
+              font-size: 0.9rem;
+              color: var(--text-secondary);
+            "
+          >
+            Não tem conta?
+            <span
+              class="toggle-link"
+              onclick="alternarFormulario('cadastro')"
+              style="
+                color: var(--primary-color);
+                cursor: pointer;
+                font-weight: 600;
+              "
+              >Cadastre-se aqui</span
+            >
+          </p>
+          <div style="text-align: center; margin-bottom: 10px">
+            <a
+              href="#"
+              onclick="abrirModalRecuperacao()"
+              style="
+                color: var(--primary-color);
+                font-size: 0.9rem;
+                text-decoration: none;
+              "
+            >
+              Esqueci minha senha
+            </a>
+          </div>
+        </form>
+
+        <form
+          id="formCadastro"
+          class="form-toggle"
+          onsubmit="fazerCadastro(event)"
+        >
+          <div class="input-group">
+            <label>Nome Completo</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-id-card"></i>
+              <input
+                type="text"
+                id="cadNome"
+                placeholder="Seu nome completo"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>E-mail Corporativo</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-envelope"></i>
+              <input
+                type="email"
+                id="cadEmail"
+                placeholder="seu.email@saude.riopreto.sp.gov.br"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>Matrícula</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-hashtag"></i>
+              <input
+                type="text"
+                id="cadMatricula"
+                placeholder="Somente números"
+                required
+                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              />
+            </div>
+            <small class="input-hint"
+              >Use apenas os números da sua funcional.</small
+            >
+          </div>
+
+          <div class="input-group">
+            <label>Senha</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-lock"></i>
+              <input
+                type="password"
+                id="cadSenha"
+                placeholder="Crie uma senha segura"
+                required
+                minlength="6"
+              />
+            </div>
+            <small class="input-hint">Mínimo de 6 caracteres.</small>
+          </div>
+
+          <div class="input-group">
+            <label>Confirmar Senha</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-lock"></i>
+              <input
+                type="password"
+                id="cadSenhaConfirma"
+                placeholder="Repita a senha"
+                required
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="btn-login"
+            style="background-color: var(--success-color)"
+          >
+            Criar Conta <i class="fa-solid fa-check"></i>
+          </button>
+
+          <p
+            style="
+              text-align: center;
+              margin-top: 20px;
+              font-size: 0.9rem;
+              color: var(--text-secondary);
+            "
+          >
+            Já possui conta?
+            <span
+              class="toggle-link"
+              onclick="alternarFormulario('login')"
+              style="
+                color: var(--primary-color);
+                cursor: pointer;
+                font-weight: 600;
+              "
+              >Fazer Login</span
+            >
+          </p>
+        </form>
+      </div>
+
+      <p class="footer-text">
+        Secretaria Municipal de Saúde<br />
+        São José do Rio Preto © 2026
+      </p>
+    </div>
+
+    <script>
+      const savedTheme = localStorage.getItem("theme") || "light";
+      document.documentElement.setAttribute("data-theme", savedTheme);
+      const icon = document.getElementById("themeIcon");
+      if (icon)
+        icon.className =
+          savedTheme === "dark" ? "fa-solid fa-sun" : "fa-solid fa-moon";
+
+      function toggleTheme() {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute("data-theme");
+        const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+        html.setAttribute("data-theme", newTheme);
+        localStorage.setItem("theme", newTheme);
+
+        const icon = document.getElementById("themeIcon");
+        icon.className =
+          newTheme === "dark" ? "fa-solid fa-sun" : "fa-solid fa-moon";
+      }
+    </script>
+
+    <div id="modalRecuperar" class="modal-overlay">
+      <div class="modal-card">
+        <div class="modal-header-custom">
+          <h3><i class="fa-solid fa-lock-open"></i> Recuperar Acesso</h3>
+          <button
+            onclick="document.getElementById('modalRecuperar').style.display='none'"
+            class="btn-icon"
+          >
+            <i class="fa-solid fa-times"></i>
+          </button>
+        </div>
+
+        <div class="modal-body-custom">
+          <div id="step1">
+            <p>Digite sua matrícula para localizarmos seu cadastro.</p>
+            <input
+              type="text"
+              id="recupMatricula"
+              class="obs-input"
+              placeholder="Sua Matrícula"
+              style="margin-bottom: 15px"
+            />
+            <button
+              onclick="solicitarCodigo()"
+              class="btn-primary"
+              style="width: 100%"
+            >
+              Buscar Cadastro
+            </button>
+          </div>
+
+          <div id="step2" style="display: none;">
+            <div style="background: rgba(56, 189, 248, 0.1); color: #38bdf8; padding: 10px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 15px; border: 1px solid rgba(56, 189, 248, 0.2);">
+                <i class="fa-solid fa-envelope"></i> Enviamos um código para: <br>
+                <strong id="txtEmailMascarado">---</strong>
+            </div>
+        
+            <label style="color: #cbd5e1; font-size: 0.85rem;">Código de Verificação (Veja no Terminal)</label>
+            <input type="text" id="recupToken" class="obs-input" placeholder="Cole o código aqui">
+        
+            <label>Nova Senha</label>
+            <div class="input-wrapper">
+                <input type="password" id="recupNovaSenha" class="obs-input" placeholder="Digite a nova senha">
+                <i class="fa-solid fa-eye" onclick="toggleVisibilidade('recupNovaSenha')"></i>
+            </div>
+            
+            <label>Confirmar Nova Senha</label>
+            <div class="input-wrapper">
+                <input type="password" id="recupConfirmarSenha" class="obs-input" placeholder="Digite novamente">
+                <i class="fa-solid fa-eye" onclick="toggleVisibilidade('recupConfirmarSenha')"></i>
+            </div>
+            <button onclick="confirmarTroca()" style="background-color: var(--success-color);">
+                Alterar Senha
+            </button>
+        </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // URL da API
+      const API_BASE = "http://127.0.0.1:8000/api/";
+      let uidUsuario = null; // Guarda o ID seguro do usuário
+
+      function abrirModalRecuperacao() {
+        document.getElementById("modalRecuperar").style.display = "flex";
+        document.getElementById("step1").style.display = "block";
+        document.getElementById("step2").style.display = "none";
+        document.getElementById("recupMatricula").value = "";
+      }
+
+      // Função para ver/esconder senha (Olinho genérico)
+      function toggleVisibilidade(id) {
+        const input = document.getElementById(id);
+        input.type = input.type === "password" ? "text" : "password";
+      }
+
+      //Esqueci minha senha
+      // PASSO 1: Solicita o código
+      async function solicitarCodigo() {
+        const matricula = document.getElementById("recupMatricula").value;
+        const btn = event.target;
+
+        if (!matricula) return alert("Digite a matrícula.");
+
+        btn.innerHTML =
+          '<i class="fa-solid fa-spinner fa-spin"></i> Buscando...';
+        btn.disabled = true;
+
+        try {
+          const response = await fetch(
+            `${API_BASE}recuperar-senha/solicitar/`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ matricula: matricula }),
+            }
+          );
+          const data = await response.json();
+
+          if (response.ok) {
+            // Sucesso: Vai para o passo 2
+            document.getElementById("step1").style.display = "none";
+            document.getElementById("step2").style.display = "block";
+
+            document.getElementById("txtEmailMascarado").innerText =
+              data.email_mascarado;
+            uidUsuario = data.uid; // Guarda o ID para o próximo passo
+          } else {
+            alert("Erro: " + (data.erro || "Usuário não encontrado"));
+          }
+        } catch (e) {
+          console.error(e);
+          alert("Erro de conexão.");
+        } finally {
+          btn.innerHTML = "Buscar Cadastro";
+          btn.disabled = false;
+        }
+      }
+
+      // PASSO 2: Confirma a troca
+      async function confirmarTroca() {
+        const token = document.getElementById("recupToken").value;
+        const novaSenha = document.getElementById("recupNovaSenha").value;
+        const btn = event.target;
+
+        if (!token || !novaSenha) return alert("Preencha todos os campos.");
+
+        btn.innerHTML =
+          '<i class="fa-solid fa-spinner fa-spin"></i> Alterando...';
+        btn.disabled = true;
+
+        try {
+          const response = await fetch(
+            `${API_BASE}recuperar-senha/confirmar/`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                uid: uidUsuario,
+                token: token,
+                new_password: novaSenha,
+              }),
+            }
+          );
+          const data = await response.json();
+
+          if (response.ok) {
+            alert("✅ Sucesso! " + data.mensagem);
+            location.reload(); // Recarrega para pessoa logar
+          } else {
+            alert("❌ Erro: " + data.erro);
+          }
+        } catch (e) {
+          alert("Erro de conexão.");
+        } finally {
+          btn.innerHTML = "Alterar Senha";
+          btn.disabled = false;
+        }
+      }
+    </script>
+
+    <script src="login.js"></script>
+  </body>
+</html>

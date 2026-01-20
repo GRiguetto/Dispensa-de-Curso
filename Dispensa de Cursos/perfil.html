@@ -26,7 +26,7 @@
 
     <nav class="sidebar">
         <div class="logo-area">
-            <i class="fa-solid fa-notes-medical fa-2x"></i>
+            <i><img src="img/Coat_of_arms_of_São_José_do_Rio_Preto_SP.png" alt="" width="50px"></i>
             <span>Dispensa<br>Digital</span>
         </div>
         <ul class="menu-items">
@@ -112,8 +112,16 @@
                         <i class="fa-solid fa-floppy-disk"></i> Salvar Alterações
                     </button>
 
+                    
+
                 </form>
-            </div>
+
+                <div class="form-actions">
+                    <button type="button" onclick="abrirModalSenha()" class="btn-security">
+                        <i class="fa-solid fa-lock"></i> Alterar Senha
+                    </button>
+                    
+                </div>
 
         </div>
     </main>
@@ -138,6 +146,42 @@
             </div>
         </div>
     </div>
+    
+    <div id="modalSenha" class="modal-overlay">
+        <div class="modal-modern">
+            <div class="modal-header-clean">
+                <h3><i class="fa-solid fa-shield-halved"></i> Segurança</h3>
+                <button onclick="fecharModalSenha()" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="modal-body-clean">
+                <p class="modal-subtitle">Atualize suas credenciais de acesso.</p>
+                
+                <form onsubmit="alterarSenha(event)">
+                    <div class="input-group-modern">
+                        <i class="fa-solid fa-key input-icon"></i>
+                        <input type="password" id="senhaAtual" required placeholder="Senha Atual">
+                    </div>
+    
+                    <div class="input-group-modern">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="novaSenha" required placeholder="Nova Senha">
+                    </div>
+    
+                    <div class="input-group-modern">
+                        <i class="fa-solid fa-check-double input-icon"></i>
+                        <input type="password" id="confirmaSenha" required placeholder="Confirmar Nova Senha">
+                    </div>
+    
+                    <button type="submit" class="btn-confirm-password">
+                        Confirmar Alteração
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    
 
     <script src="perfil.js"></script>
 </body>
