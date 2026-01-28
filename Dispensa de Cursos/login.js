@@ -1,4 +1,4 @@
-const API_URL = "https://NOME-DO-SEU-APP-NO-RENDER.onrender.com/api/";
+const API_URL = "http://127.0.0.1:8000/api/";
 
 function alternarFormulario(tipo) {
   const formLogin = document.getElementById("formLogin");
